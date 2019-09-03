@@ -2,7 +2,10 @@
 import sys
 import os
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog, QPushButton, QCheckBox, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog, QPushButton, QCheckBox, \
+                            QLabel, QVBoxLayout, QHBoxLayout
+
+
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 
@@ -41,6 +44,87 @@ class App(QWidget):
         
         self.params = 0
 
+    def doLayout_Manual(self):
+
+
+        self.l1.move(25, 15)
+        self.l2.move(10, 180)
+        self.l2.move(25, 210)
+
+        self.button_open_file1.move(25, 45)
+        self.button_open_file2.move(25, 80)
+
+        self.butt_process.move(25, 240)
+        self.butt_process.move(25, 270)
+        self.butt_process.move(25, 310)
+        self.butt_process.move(25, 150)
+
+        self.butt_save.move(110, 150)
+
+        self.box_gcd.move(200,65)
+        self.box_gcd.resize(320,40)
+
+        self.box_scf.move(200,125)
+        self.box_scf.resize(320,40)
+
+        self.box_ucf.move(200,95)
+        self.box_ucf.resize(320,40)
+
+        self.box_ctb.move(200, 35)
+        self.box_ctb.resize(320, 40)
+
+    def doLayout(self):
+        self.lay_main = QVBoxLayout();
+        self.lay_in = QVBoxLayout();
+
+        self.lay_top = QHBoxLayout();
+
+        self.lay_file_butts = QVBoxLayout();
+        self.lay_file_butts.addWidget(self.button_open_file1)
+        self.lay_file_butts.addWidget(self.button_open_file2)
+
+        self.lay_cbs= QVBoxLayout();
+        self.lay_cbs.addWidget(self.box_gcd)
+        self.lay_cbs.addWidget(self.box_scf)
+        self.lay_cbs.addWidget(self.box_ucf)
+        self.lay_cbs.addWidget(self.box_ctb)
+
+        self.lay_butts = QVBoxLayout();
+        self.lay_butts.addWidget(self.butt_process)
+        self.lay_butts.addWidget(self.butt_save)
+
+        self.setLayout(self.lay_main)
+        self.lay_main.addLayout(self.lay_top)
+        self.lay_top.addLayout(self.lay_file_butts)
+        self.lay_top.addLayout(self.lay_cbs)
+        self.lay_top.addLayout(self.lay_butts)
+
+        #self.lay_main.addWidget(self.butt_start_process)
+        #self.lay_main.addWidget(self.butt_file_corr_b)
+
+
+
+
+
+        #
+        # self.l1.move(25, 15)
+        # self.l2.move(10, 180)
+        # self.l2.move(25, 210)
+        #
+        # self.button_open_file1.move(25, 45)
+        # self.button_open_file2.move(25, 80)
+        # self.button_start_process.move(25, 240)
+        # self.button_start_process.move(25, 270)
+        # self.button_start_process.move(25, 310)
+        # self.button_start_process.move(25, 150)
+        # self.button_save_file.move(110, 150)
+
+
+
+
+
+
+
     def initUI(self):
 
     ### Defines form and status of window and buttons ###
@@ -51,81 +135,65 @@ class App(QWidget):
         self.setGeometry(self.left, self.top, self.width, self.height)
 
         self.l1 = QLabel('Choose files to generate correction files', self)
-        self.l1.move(25,15)
+
 
         self.l2 = QLabel('----------------------------------------------------------------', self)
-        self.l2.move(10,180)
+
 
         self.l2 = QLabel('Choose correction file to see plot', self)
-        self.l2.move(25,210)
+
         #self.vbox = QVBoxLayout()
         #vbox.addWidget(self.l1)
 
         self.button_open_file1 = QPushButton('Choose file *.par', self)
-        self.button_open_file1.move(25,45)
         self.button_open_file1.clicked.connect(self.on_click_choose_par)
-        #button_open_file1.clicked.connect(self.check_files)
 
+        #button_open_file1.clicked.connect(self.check_files)
         self.button_open_file2 = QPushButton('Choose file *.xli', self)
-        self.button_open_file2.move(25,80)
         self.button_open_file2.clicked.connect(self.on_click_choose_xli)
         #button_open_file1.clicked.connect(self.check_files)
 
-        self.button_start_process = QPushButton('Read Corrfile A', self)
-        self.button_start_process.move(25,240)
+        self.butt_file_corr_a = QPushButton('Read Corrfile A', self)
         #button_start_process.setEnabled(False)
-        self.button_start_process.clicked.connect(self.on_click_read_corrfile)
-    
-        self.button_start_process = QPushButton('Read Corrfile B', self)
-        self.button_start_process.move(25,270)
-        #button_start_process.setEnabled(False)
-        self.button_start_process.clicked.connect(self.on_click_read_corrfileB)
-        
-        self.button_start_process = QPushButton('Analyse A-B', self)
-        self.button_start_process.move(25,310)
-        #button_start_process.setEnabled(False)
-        self.button_start_process.clicked.connect(self.on_click_analyseAB)
-        
-        
-        self.button_start_process = QPushButton('Process files', self)
-        self.button_start_process.move(25,150)
-        #button_start_process.setEnabled(False)
-        self.button_start_process.clicked.connect(self.on_click_process)
+        self.butt_file_corr_a.clicked.connect(self.on_click_read_corrfile_a)
 
-        self.button_save_file = QPushButton('Save files', self)
-        self.button_save_file.move(110,150)
-        #war 200
-        self.button_save_file.setEnabled(False)
-        self.button_save_file.clicked.connect(self.on_click_save)
+        self.butt_file_corr_b = QPushButton('Read Corrfile B', self)
+        #button_start_process.setEnabled(False)
+        self.butt_file_corr_b.clicked.connect(self.on_click_read_corrfile_b)
+
+        self.butt_analyse = QPushButton('Analyse A-B', self)
+        #button_start_process.setEnabled(False)
+        self.butt_analyse.clicked.connect(self.on_click_analyseAB)
+
+        self.butt_process = QPushButton('Process files', self)
+        #button_start_process.setEnabled(False)
+        self.butt_process.clicked.connect(self.on_click_process)
+
+        self.butt_save = QPushButton('Save files', self)
+        self.butt_save.setEnabled(False)
+        self.butt_save.clicked.connect(self.on_click_save)
 
         self.box_ctb = QCheckBox(".ctb",self)
         self.box_ctb.setChecked(True)
         #self.box_ctb.stateChanged.connect(self.clickBox_ctb)
         #self.corrfield.ctb = True
-        self.box_ctb.move(200,35)
-        self.box_ctb.resize(320,40)
 
         self.box_gcd = QCheckBox(".gcd",self)
         self.box_gcd.setChecked(True)
         #self.box_gcd.stateChanged.connect(self.clickBox_gcd)
         #self.corrfield.gcd = True
-        self.box_gcd.move(200,65)
-        self.box_gcd.resize(320,40)
 
         self.box_ucf = QCheckBox(".ucf",self)
         self.box_ucf.setChecked(True)
         #self.box_ucf.stateChanged.connect(self.clickBox_ucf)
         #self.corrfield.ucf = True
-        self.box_ucf.move(200,95)
-        self.box_ucf.resize(320,40)
-        
+
         self.box_scf = QCheckBox(".scf",self)
         self.box_scf.setChecked(True)
         #self.box_ucf.stateChanged.connect(self.clickBox_ucf)
         #self.corrfield.ucf = True
-        self.box_scf.move(200,125)
-        self.box_scf.resize(320,40)
 
+        self.doLayout_Manual();
         self.show()
 
     ### functions to get the filenames through file dialog ###
@@ -294,19 +362,19 @@ class App(QWidget):
                 self.corrfield.create_readme()
         #write_ctb(self.file_name2, self.m_aXnp, self.m_aYnp, self.wavelength, self.max_mechX, self.max_mechY, self.K)
 
-    def on_click_read_corrfile(self):
-        print('Read Corrfile button click')
+    def on_click_read_corrfile_a(self):
+        print('Read Corrfile A button click')
         self.readCorrFile()
         self.corrfield.read_files(filename = "".join(self.corrfield.filename))
         
-    def on_click_read_corrfileB(self):
-        print('Read Corrfile button click')
+    def on_click_read_corrfile_b(self):
+        print('Read Corrfile B button click')
         self.readCorrFile()
         self.corrfieldB.read_files(filename = "".join(self.corrfield.filename))
 
         
     def on_click_analyseAB(self):
-        print('Read Corrfile button click')
+        print('Read Analyse button click')
         # prüfen das 
         #self.corrfield.analyseAB(filename = "".join(self.corrfield.filename))
         
