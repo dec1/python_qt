@@ -3,7 +3,7 @@ import sys
 import os
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog, QPushButton, QCheckBox, \
-                            QLabel, QVBoxLayout, QHBoxLayout
+                            QLabel, QVBoxLayout, QHBoxLayout, QFrame
 
 
 from PyQt5.QtGui import QIcon
@@ -44,44 +44,21 @@ class App(QWidget):
         
         self.params = 0
 
-    def doLayout_Manual(self):
 
-
-        self.l1.move(25, 15)
-        self.l2.move(10, 180)
-        self.l2.move(25, 210)
-
-        self.button_open_file1.move(25, 45)
-        self.button_open_file2.move(25, 80)
-
-        self.butt_process.move(25, 240)
-        self.butt_process.move(25, 270)
-        self.butt_process.move(25, 310)
-        self.butt_process.move(25, 150)
-
-        self.butt_save.move(110, 150)
-
-        self.box_gcd.move(200,65)
-        self.box_gcd.resize(320,40)
-
-        self.box_scf.move(200,125)
-        self.box_scf.resize(320,40)
-
-        self.box_ucf.move(200,95)
-        self.box_ucf.resize(320,40)
-
-        self.box_ctb.move(200, 35)
-        self.box_ctb.resize(320, 40)
 
     def doLayout(self):
+        self.setMinimumWidth(500)
         self.lay_main = QVBoxLayout();
-        self.lay_in = QVBoxLayout();
+        self.lay_main.setSpacing(10)
 
         self.lay_top = QHBoxLayout();
 
         self.lay_file_butts = QVBoxLayout();
-        self.lay_file_butts.addWidget(self.button_open_file1)
-        self.lay_file_butts.addWidget(self.button_open_file2)
+        self.lay_main.addWidget(self.l1)
+        self.lay_main.addSpacing(10)
+
+        self.lay_file_butts.addWidget(self.butt_file_par)
+        self.lay_file_butts.addWidget(self.butt_file_xli)
 
         self.lay_cbs= QVBoxLayout();
         self.lay_cbs.addWidget(self.box_gcd)
@@ -99,29 +76,14 @@ class App(QWidget):
         self.lay_top.addLayout(self.lay_cbs)
         self.lay_top.addLayout(self.lay_butts)
 
-        #self.lay_main.addWidget(self.butt_start_process)
-        #self.lay_main.addWidget(self.butt_file_corr_b)
+        self.lay_main.addSpacing(10)
+        self.lay_main.addWidget(self.sep)
+        self.lay_main.addSpacing(10)
 
-
-
-
-
-        #
-        # self.l1.move(25, 15)
-        # self.l2.move(10, 180)
-        # self.l2.move(25, 210)
-        #
-        # self.button_open_file1.move(25, 45)
-        # self.button_open_file2.move(25, 80)
-        # self.button_start_process.move(25, 240)
-        # self.button_start_process.move(25, 270)
-        # self.button_start_process.move(25, 310)
-        # self.button_start_process.move(25, 150)
-        # self.button_save_file.move(110, 150)
-
-
-
-
+        self.lay_main.addWidget(self.l2)
+        self.lay_main.addWidget(self.butt_file_corr_a)
+        self.lay_main.addWidget(self.butt_file_corr_b)
+        self.lay_main.addWidget(self.butt_analyse_ab)
 
 
 
@@ -136,22 +98,32 @@ class App(QWidget):
 
         self.l1 = QLabel('Choose files to generate correction files', self)
 
+        # separator .. looks like horizontal line
+        self.sep = QFrame(self)
+        self.sep.setFrameShape(QFrame.HLine)
+        self.sep.setFixedHeight(1)
 
-        self.l2 = QLabel('----------------------------------------------------------------', self)
 
 
         self.l2 = QLabel('Choose correction file to see plot', self)
 
-        #self.vbox = QVBoxLayout()
-        #vbox.addWidget(self.l1)
-
-        self.button_open_file1 = QPushButton('Choose file *.par', self)
-        self.button_open_file1.clicked.connect(self.on_click_choose_par)
+        self.butt_file_par = QPushButton('Choose file *.par', self)
+        self.butt_file_par.clicked.connect(self.on_click_choose_par)
 
         #button_open_file1.clicked.connect(self.check_files)
-        self.button_open_file2 = QPushButton('Choose file *.xli', self)
-        self.button_open_file2.clicked.connect(self.on_click_choose_xli)
+        self.butt_file_xli = QPushButton('Choose file *.xli', self)
+        self.butt_file_xli.clicked.connect(self.on_click_choose_xli)
         #button_open_file1.clicked.connect(self.check_files)
+
+        self.butt_process = QPushButton('Process files', self)
+        # button_start_process.setEnabled(False)
+        self.butt_process.clicked.connect(self.on_click_process)
+
+        self.butt_save = QPushButton('Save files', self)
+        self.butt_save.setEnabled(False)
+        self.butt_save.clicked.connect(self.on_click_save)
+
+    #---------------------------------------------
 
         self.butt_file_corr_a = QPushButton('Read Corrfile A', self)
         #button_start_process.setEnabled(False)
@@ -161,17 +133,11 @@ class App(QWidget):
         #button_start_process.setEnabled(False)
         self.butt_file_corr_b.clicked.connect(self.on_click_read_corrfile_b)
 
-        self.butt_analyse = QPushButton('Analyse A-B', self)
+        self.butt_analyse_ab = QPushButton('Analyse A-B', self)
         #button_start_process.setEnabled(False)
-        self.butt_analyse.clicked.connect(self.on_click_analyseAB)
+        self.butt_analyse_ab.clicked.connect(self.on_click_analyseAB)
 
-        self.butt_process = QPushButton('Process files', self)
-        #button_start_process.setEnabled(False)
-        self.butt_process.clicked.connect(self.on_click_process)
 
-        self.butt_save = QPushButton('Save files', self)
-        self.butt_save.setEnabled(False)
-        self.butt_save.clicked.connect(self.on_click_save)
 
         self.box_ctb = QCheckBox(".ctb",self)
         self.box_ctb.setChecked(True)
@@ -193,7 +159,7 @@ class App(QWidget):
         #self.box_ucf.stateChanged.connect(self.clickBox_ucf)
         #self.corrfield.ucf = True
 
-        self.doLayout_Manual();
+        self.doLayout();
         self.show()
 
     ### functions to get the filenames through file dialog ###

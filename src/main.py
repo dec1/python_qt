@@ -9,22 +9,24 @@ class Form(QDialog):
         self.setWindowTitle("Qt Layout example")
         self.setMinimumWidth(500)
         # Create widgets
-        self.led = QLineEdit()
-        self.led.setPlaceholderText("write your name here")
-        self.butt_greet = QPushButton("Say Hello")
-        self.butt_close = QPushButton("Close")
+        led = QLineEdit()
+        led.setPlaceholderText("write your name here")
+        self.led= led
+
+        butt_greet = QPushButton("Say Hello")
+        butt_close = QPushButton("Close")
 
         # Create layout and add widgets
         layout = QVBoxLayout()
-        layout.addWidget(self.led)
-        layout.addWidget(self.butt_greet)
-        layout.addWidget(self.butt_close)
+        layout.addWidget(led)
+        layout.addWidget(butt_greet)
+        layout.addWidget(butt_close)
 
         # Set layout
         self.setLayout(layout)
         # Add button signal to greetings slot
-        self.butt_greet.clicked.connect(self.greetings)
-        self.butt_close.clicked.connect(self.close)
+        butt_greet.clicked.connect(self.greetings)
+        butt_close.clicked.connect(self.close)
 
     # Greets the user
     def greetings(self):
